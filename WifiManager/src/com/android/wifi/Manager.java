@@ -22,9 +22,9 @@ public class Manager extends Service {
 	public static final String CMD_START = "start";
 	public static final String CMD_STOP = "stop";
 	
-	private static final String TAG = "wifimanager";
-	private static final String AUTOSTART = "autostart";
+	public static final String AUTOSTART = "autostart";
 	private static final String PASSWORD = "password";
+	private static final String TAG = "wifimanager";
 
 	private static final int PERIOD = 1000;
 
@@ -44,7 +44,7 @@ public class Manager extends Service {
 		return getSharedPreferences(context).getString(PASSWORD, sha("admin")).equals(sha(password));
 	}
 	
-	public static void setPassword(Context context, String password) {
+	private static void setPassword(Context context, String password) {
 		getSharedPreferences(context).edit().putString(PASSWORD, sha(password)).commit();
 	}
 	

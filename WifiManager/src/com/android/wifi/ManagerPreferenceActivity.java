@@ -1,5 +1,6 @@
 package com.android.wifi;
 
+import static com.android.wifi.Manager.AUTOSTART;
 import static com.android.wifi.Manager.CMD_START;
 import static com.android.wifi.Manager.CMD_STOP;
 import static com.android.wifi.Manager.isPasswordEquals;
@@ -10,6 +11,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.text.InputType;
 import android.view.Menu;
@@ -23,6 +26,23 @@ public class ManagerPreferenceActivity extends PreferenceActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preferences);
+		final CheckBoxPreference prefAutostart = (CheckBoxPreference) findPreference(AUTOSTART);
+		prefAutostart.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+			
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue) {
+				validate(new Runnable() {
+					
+					@Override
+					public void run() {
+						prefAutostart.setChecked(!prefAutostart.isChecked());
+					}
+					
+				}, prefAutostart.isChecked());
+				return false;
+			}
+			
+		});
 	}
 
 	@Override
@@ -61,7 +81,7 @@ public class ManagerPreferenceActivity extends PreferenceActivity {
 
 	private void validate(final Runnable action, boolean validation) {
 		if (validation) {
-			final AlertDialog.Builder alert = new AlertDialog.Builder(this).setTitle(getText(R.string.password));
+			final AlertDialog.Builder alert = new AlertDialog.Builder(this).setTitle(getText(R.string.password)).setIcon(android.R.drawable.ic_dialog_alert);
 	
 			final EditText input = new EditText(this);
 			input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);

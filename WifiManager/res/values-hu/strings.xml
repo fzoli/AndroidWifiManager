@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WiFi Menedzser</string>
+    <string name="autostart">Rendszerindítás</string>
+    <string name="start">Elindít</string>
+    <string name="stop">Megállít</string>
+</resources>

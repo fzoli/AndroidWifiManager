@@ -20,7 +20,7 @@ public class Manager extends Service {
 	public static final String CMD_START = "start";
 	public static final String CMD_STOP = "stop";
 	
-	private static final String TAG = "wifi manager";
+	private static final String TAG = "wifimanager";
 	private static final String AUTOSTART = "autostart";
 
 	private static final int PERIOD = 1000;

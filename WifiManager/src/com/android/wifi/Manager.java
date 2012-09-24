@@ -17,8 +17,11 @@ public class Manager extends Service {
 
 	public static final String COMMAND = "command";
 
-	private static final String AUTOSTART = "autostart";
+	public static final String CMD_START = "start";
+	public static final String CMD_STOP = "stop";
+	
 	private static final String TAG = "wifi manager";
+	private static final String AUTOSTART = "autostart";
 
 	private static final int PERIOD = 1000;
 
@@ -26,8 +29,12 @@ public class Manager extends Service {
 	private static TimerTask task;
 	private static WifiManager wfm;
 
+	public static boolean isRunning() {
+		return timer != null;
+	}
+	
 	private static void start() {
-		if (timer != null) return;
+		if (isRunning()) return;
 		timer = new Timer();
 		task = new TimerTask() {
 
@@ -45,7 +52,7 @@ public class Manager extends Service {
 	}
 
 	private static void stop() {
-		if (timer == null) return;
+		if (!isRunning()) return;
 		task.cancel();
 		task = null;
 		timer = null;
@@ -84,11 +91,11 @@ public class Manager extends Service {
 		}
 		if (intent.hasExtra(COMMAND)) {
 			String action = intent.getExtras().getString(COMMAND);
-			if ("start".equals(action)) {
+			if (CMD_START.equals(action)) {
 				Log.i(TAG, "service start");
 				start();
 			}
-			else if ("stop".equals(action)) {
+			else if (CMD_STOP.equals(action)) {
 				Log.i(TAG, "service stop");
 				stop();
 			}

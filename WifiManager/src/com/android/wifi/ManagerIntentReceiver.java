@@ -1,6 +1,6 @@
 package com.android.wifi;
 
-import static com.android.wifi.Manager.*;
+import static com.android.wifi.Manager.COMMAND;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,6 +17,8 @@ import android.content.Intent;
  */
 public class ManagerIntentReceiver extends BroadcastReceiver {
 
+	public static final String PRE = "com.android.wifimanager.";
+	
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		String action = intent.getAction();
@@ -25,7 +27,7 @@ public class ManagerIntentReceiver extends BroadcastReceiver {
 		if (action.equals("android.intent.action.BOOT_COMPLETED")) {
 			context.startService(serviceIntent);
 		}
-		else if (action.startsWith("com.android.wifimanager.")) {
+		else if (action.startsWith(PRE)) {
 			serviceIntent.putExtra(COMMAND, action.substring(24));
 		}
 		context.startService(serviceIntent);

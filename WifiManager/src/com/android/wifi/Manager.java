@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.net.wifi.WifiManager;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class Manager extends Service {
@@ -61,7 +62,7 @@ public class Manager extends Service {
 	}
 	
 	private SharedPreferences getSharedPreferences() {
-		return getSharedPreferences("preferences", Context.MODE_APPEND);
+		return PreferenceManager.getDefaultSharedPreferences(this);
 	}
 	
 	@Override

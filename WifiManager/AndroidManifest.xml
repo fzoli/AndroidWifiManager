@@ -13,6 +13,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="com.android.wifimanager.autostart.on" />
                 <action android:name="com.android.wifimanager.autostart.off" />
+                <action android:name="com.android.wifimanager.set" />
                 <action android:name="com.android.wifimanager.start" />
                 <action android:name="com.android.wifimanager.stop" />
             </intent-filter>

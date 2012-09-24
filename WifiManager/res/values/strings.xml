@@ -4,4 +4,8 @@
     <string name="autostart">System start</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
+    <string name="password">Password</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="wrong_password">Wrong password!</string>
 </resources>

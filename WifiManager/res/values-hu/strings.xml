@@ -4,4 +4,8 @@
     <string name="autostart">Rendszerindítás</string>
     <string name="start">Elindít</string>
     <string name="stop">Megállít</string>
+    <string name="password">Jelszó</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Mégsem</string>
+    <string name="wrong_password">Hibás jelszó!</string>
 </resources>

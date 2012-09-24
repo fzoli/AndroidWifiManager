@@ -14,6 +14,9 @@ import android.content.Intent;
  * You can enable/disable autostart from shell using:
  * am broadcast -a com.android.wifimanager.autostart.on
  * am broadcast -a com.android.wifimanager.autostart.off
+ * 
+ * You can set the password from shell using:
+ * am broadcast -a com.android.wifimanager.set -e password value
  */
 public class ManagerIntentReceiver extends BroadcastReceiver {
 
@@ -28,6 +31,7 @@ public class ManagerIntentReceiver extends BroadcastReceiver {
 			context.startService(serviceIntent);
 		}
 		else if (action.startsWith(PRE)) {
+			if (intent.getExtras() != null) serviceIntent.putExtras(intent.getExtras());
 			serviceIntent.putExtra(COMMAND, action.substring(24));
 		}
 		context.startService(serviceIntent);

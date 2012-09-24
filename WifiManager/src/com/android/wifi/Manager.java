@@ -3,11 +3,13 @@ package com.android.wifi;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.digest.DigestUtils;
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -22,6 +24,7 @@ public class Manager extends Service {
 	
 	private static final String TAG = "wifimanager";
 	private static final String AUTOSTART = "autostart";
+	private static final String PASSWORD = "password";
 
 	private static final int PERIOD = 1000;
 
@@ -31,6 +34,23 @@ public class Manager extends Service {
 
 	public static boolean isRunning() {
 		return timer != null;
+	}
+	
+	public static SharedPreferences getSharedPreferences(Context context) {
+		return PreferenceManager.getDefaultSharedPreferences(context);
+	}
+	
+	public static boolean isPasswordEquals(Context context, String password) {
+		return getSharedPreferences(context).getString(PASSWORD, sha("admin")).equals(sha(password));
+	}
+	
+	public static void setPassword(Context context, String password) {
+		getSharedPreferences(context).edit().putString(PASSWORD, sha(password)).commit();
+	}
+	
+	@SuppressWarnings("deprecation")
+	private static String sha(String s) {
+		return new String(Hex.encodeHex(DigestUtils.sha(s)));
 	}
 	
 	private static void start() {
@@ -59,17 +79,11 @@ public class Manager extends Service {
 	}
 
 	private boolean isAutostart() {
-		return getSharedPreferences().getBoolean(AUTOSTART, true);
+		return getSharedPreferences(this).getBoolean(AUTOSTART, true);
 	}
 	
 	private void setAutostart(boolean value) {
-		Editor editor = getSharedPreferences().edit();
-		editor.putBoolean(AUTOSTART, value);
-		editor.commit();
-	}
-	
-	private SharedPreferences getSharedPreferences() {
-		return PreferenceManager.getDefaultSharedPreferences(this);
+		getSharedPreferences(this).edit().putBoolean(AUTOSTART, value).commit();
 	}
 	
 	@Override
@@ -106,6 +120,12 @@ public class Manager extends Service {
 			else if ("autostart.off".equals(action)) {
 				Log.i(TAG, "autostart disabled");
 				setAutostart(false);
+			}
+			else if ("set".equals(action)) {
+				if (intent.hasExtra(PASSWORD)) {
+					Log.i(TAG, "password changed");
+					setPassword(this, intent.getExtras().getString(PASSWORD));
+				}
 			}
 		}
 		else {
